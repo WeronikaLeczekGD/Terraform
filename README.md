@@ -1,8 +1,7 @@
 # Terraform
 
-Everything should be inside Terraform configuration files, manual changes are not allowed.
+notes from instruction: Everything should be inside Terraform configuration files, manual changes are not allowed.
 Try to use terraform modules to segregate resources by its types (compute, network).
-
 
 ## [1. Create a temporary VM with metadata script installing HTTP server (Apache) with simple website inside.](#ad-1)
 
@@ -12,7 +11,6 @@ Try to use terraform modules to segregate resources by its types (compute, netwo
 
 ## [4. Every host should display server number/hostname to ensure that load balancer is working. User should be able to connect to the website in High Availability mode via external load balancer IP](#ad-4)
 
-
 ## [5. Add firewall for accessing external load balancer from limited IP addresses range and only for certain ports.](#ad-5)
 
 ## [6. Use Public Cloud storage service as backend for Terraform state.](#ad-6)
@@ -20,7 +18,7 @@ Try to use terraform modules to segregate resources by its types (compute, netwo
 
 ## Ad 1
 
-Create a temporary VM with metadata script installing HTTP server (Apache) with simple website inside.
+### Create a temporary VM with metadata script installing HTTP server (Apache) with simple website inside.
 
 ```
 resource "aws_instance" "temp" {
@@ -47,7 +45,7 @@ resource "aws_instance" "temp" {
 
 ## Ad 2
 
-Creating an image from temporary VM:
+### Creating an image from temporary VM:
 
 ```
 resource "aws_ami_from_instance" "ami" {
@@ -61,14 +59,14 @@ resource "aws_ami_from_instance" "ami" {
 }
 ```
 
-my image:
+### my image:
 
 ![Screenshot 2023-02-13 at 20 55 20](https://user-images.githubusercontent.com/114099418/218561501-4e974b0b-ebc3-4076-8067-277c326f76f4.png)
 
 
 ## Ad 3
 
-To create 3 instances I used:
+### To create 3 instances I used:
 ```
 resource "aws_instance" "group_3" {
   count = 3
@@ -83,11 +81,11 @@ resource "aws_instance" "group_3" {
   }
 }
 ```
-my 3 created instances + 1 temporary:
+### my 3 created instances + 1 temporary:
 
 ![Screenshot 2023-02-13 at 20 57 56](https://user-images.githubusercontent.com/114099418/218561984-6c781120-70df-427a-bd46-2deffe30502a.png)
 
-External load balancer with health checks:
+### Load balancer with health checks:
 
 ```
 resource "aws_elb" "example" {
@@ -120,23 +118,22 @@ resource "aws_elb_attachment" "example" {
   instance = aws_instance.group_3[count.index].id
 }
 ```
-My external load balancer:
+### My Load balancer:
 
 ![Screenshot 2023-02-13 at 21 01 12](https://user-images.githubusercontent.com/114099418/218562662-a0cf489d-064a-40fd-904b-9a6af1ee7ef7.png)
 
-Attatched instances:
+### Attatched instances:
 
 ![Screenshot 2023-02-13 at 21 03 57](https://user-images.githubusercontent.com/114099418/218563105-e6fbc460-25e4-46d9-8fd5-108b006d138f.png)
 
-Health checks:
+### Health checks:
 
 ![Screenshot 2023-02-13 at 21 04 15](https://user-images.githubusercontent.com/114099418/218563205-d5338efd-7439-4df8-952a-5b5d5f9e06a2.png)
 
 
 ## Ad 4
 
-Every host should display server number/hostname to ensure that load balancer is working.
-User should be able to connect to the website in High Availability mode via external load balancer IP.
+### Every host should display server number/hostname to ensure that load balancer is working. User should be able to connect to the website in High Availability mode via external load balancer IP.
 
 ![Screenshot 2023-02-13 at 21 12 43](https://user-images.githubusercontent.com/114099418/218564807-2e23be40-a8ac-4246-8073-fe69174f6b26.png)
 
@@ -144,7 +141,7 @@ User should be able to connect to the website in High Availability mode via exte
 
 ## Ad 5
 
-Adding security groups for accessing external load balancer from limited IP addresses range and only for certain ports:
+### Adding security groups for accessing external load balancer from limited IP addresses range and only for certain ports:
 
 ```
 resource "aws_security_group" "example" {
@@ -167,12 +164,14 @@ resource "aws_security_group" "example" {
 }
 ```
 
-my security group:
+### My security group:
 
 ![Screenshot 2023-02-13 at 21 19 55](https://user-images.githubusercontent.com/114099418/218566225-5d845200-d0f3-4278-800b-90b7f4cd3188.png)
 
 
 ## Ad 6
+
+### Using Public Cloud storage service as backend for Terraform state:
 
 ```
 terraform {
@@ -199,7 +198,7 @@ data "aws_vpc" "default" {
   default = true
 }
 ```
-my bucket:
+### My bucket:
 
 ![Screenshot 2023-02-13 at 21 23 20](https://user-images.githubusercontent.com/114099418/218566810-fb47d340-07eb-4d65-b1ce-ecb02d606e59.png)
 
