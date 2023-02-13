@@ -59,7 +59,7 @@ resource "aws_ami_from_instance" "ami" {
 }
 ```
 
-### my image:
+### My image:
 
 ![Screenshot 2023-02-13 at 20 55 20](https://user-images.githubusercontent.com/114099418/218561501-4e974b0b-ebc3-4076-8067-277c326f76f4.png)
 
@@ -81,7 +81,7 @@ resource "aws_instance" "group_3" {
   }
 }
 ```
-### my 3 created instances + 1 temporary:
+### My 3 created instances + 1 temporary:
 
 ![Screenshot 2023-02-13 at 20 57 56](https://user-images.githubusercontent.com/114099418/218561984-6c781120-70df-427a-bd46-2deffe30502a.png)
 
@@ -118,7 +118,7 @@ resource "aws_elb_attachment" "example" {
   instance = aws_instance.group_3[count.index].id
 }
 ```
-### My Load balancer:
+### My load balancer:
 
 ![Screenshot 2023-02-13 at 21 01 12](https://user-images.githubusercontent.com/114099418/218562662-a0cf489d-064a-40fd-904b-9a6af1ee7ef7.png)
 
@@ -136,7 +136,6 @@ resource "aws_elb_attachment" "example" {
 ### Every host should display server number/hostname to ensure that load balancer is working. User should be able to connect to the website in High Availability mode via external load balancer IP.
 
 ![Screenshot 2023-02-13 at 21 12 43](https://user-images.githubusercontent.com/114099418/218564807-2e23be40-a8ac-4246-8073-fe69174f6b26.png)
-
 
 
 ## Ad 5
